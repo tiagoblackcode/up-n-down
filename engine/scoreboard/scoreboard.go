@@ -9,35 +9,40 @@ import (
 )
 
 type Scoreboard struct {
-	entries []*ScoreboardEntry
+	Entries []*ScoreboardEntry
 }
 
 type ScoreboardEntry struct {
-	player *player.Player
-	points int
+	Player *player.Player
+	Points int
 }
 
-func New() Scoreboard {
-	return Scoreboard{}
+type ScoreboardEntryList []*ScoreboardEntry
+
+func New() *Scoreboard {
+	s := new(Scoreboard)
+	s.Entries = make(ScoreboardEntryList, 0)
+
+	return s
 }
 
 func (sb *Scoreboard) AddPointsForPlayer(player *player.Player, points int) {
 	entry, err := sb.GetEntryForPlayer(player)
 	if err == nil {
-		entry.points = entry.points + points
+		entry.Points = entry.Points + points
 		return
 	}
 
 	entry = new(ScoreboardEntry)
-	entry.player = player
-	entry.points = points
+	entry.Player = player
+	entry.Points = points
 
-	sb.entries = append(sb.entries, entry)
+	sb.Entries = append(sb.Entries, entry)
 }
 
 func (sb *Scoreboard) GetEntryForPlayer(player *player.Player) (*ScoreboardEntry, error) {
-	for _, e := range sb.entries {
-		if e.player.Equal(player) {
+	for _, e := range sb.Entries {
+		if e.Player.Equal(player) {
 			return e, nil
 		}
 	}
@@ -46,8 +51,8 @@ func (sb *Scoreboard) GetEntryForPlayer(player *player.Player) (*ScoreboardEntry
 }
 
 func (sb *Scoreboard) HasPlayer(player *player.Player) bool {
-	for _, e := range sb.entries {
-		if e.player.Equal(player) {
+	for _, e := range sb.Entries {
+		if e.Player.Equal(player) {
 			return true
 		}
 	}
@@ -55,11 +60,33 @@ func (sb *Scoreboard) HasPlayer(player *player.Player) bool {
 	return false
 }
 
+func (sb *Scoreboard) RemovePlayer(player *player.Player) error {
+	for eIdx, e := range sb.Entries {
+		if e.Player.Equal(player) {
+			sb.Entries = append(sb.Entries[:eIdx], sb.Entries[eIdx+1:]...)
+			return nil
+		}
+	}
+
+	return errors.New("Player was not found")
+}
+
+func (sb *Scoreboard) AddPointsFromScoreboard(otherSb Scoreboard) {
+	for _, entry := range sb.Entries {
+		otherEntry, err := otherSb.GetEntryForPlayer(entry.Player)
+		if err != nil {
+			continue
+		}
+
+		entry.Points = entry.Points + otherEntry.Points
+	}
+}
+
 func (sb Scoreboard) String() string {
 	buffer := bytes.NewBufferString("")
 
-	for i, e := range sb.entries {
-		buffer.WriteString(fmt.Sprintf("%d\t%d\t%d\n", i+1, e.player.Id, e.points))
+	for i, e := range sb.Entries {
+		buffer.WriteString(fmt.Sprintf("%d\t%d\t%d\n", i+1, e.Player.Id, e.Points))
 	}
 
 	buffer.WriteString("\n")

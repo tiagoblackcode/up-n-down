@@ -136,13 +136,13 @@ func (r *Round) handleEndOfTurnSituation() (*Round, error) {
 
 	winningPlayer.HandsWon = append(winningPlayer.HandsWon, r.Board)
 	r.Scoreboard.AddPointsForPlayer(winningPlayer, winningPoints)
-	r.State = stateEnded
+	r.State = RoundStateEnded
 
 	return r, nil
 }
 
 func (r *Round) Play(player *player.Player, playedCard card.Card) error {
-	if r.State != statePlay {
+	if r.State != RoundStatePlaying {
 		return errors.New("Game is not in playing state!")
 	}
 

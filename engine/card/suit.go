@@ -1,16 +1,16 @@
 package card
 
-type Suit int8
+type CardSuit int8
 
 const (
-	Clubs    Suit = 1
-	Spades   Suit = 2
-	Hearts   Suit = 3
-	Diamonds Suit = 4
+	Clubs    CardSuit = 1
+	Spades   CardSuit = 2
+	Hearts   CardSuit = 3
+	Diamonds CardSuit = 4
 )
 
-func Suits() []Suit {
-	return []Suit{
+func Suits() []CardSuit {
+	return []CardSuit{
 		Clubs,
 		Spades,
 		Hearts,
@@ -18,7 +18,7 @@ func Suits() []Suit {
 	}
 }
 
-func (s Suit) String() string {
+func (s CardSuit) String() string {
 	switch s {
 	case Clubs:
 		return "Clubs"

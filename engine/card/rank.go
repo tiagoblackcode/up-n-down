@@ -2,26 +2,26 @@ package card
 
 import "strconv"
 
-type Rank int8
+type CardRank int8
 
 const (
-	Ace   Rank = 1
-	Two   Rank = 2
-	Three Rank = 3
-	Four  Rank = 4
-	Five  Rank = 5
-	Six   Rank = 6
-	Seven Rank = 7
-	Eight Rank = 8
-	Nine  Rank = 9
-	Ten   Rank = 10
-	Jack  Rank = 11
-	Queen Rank = 12
-	King  Rank = 13
+	Ace   CardRank = 1
+	Two   CardRank = 2
+	Three CardRank = 3
+	Four  CardRank = 4
+	Five  CardRank = 5
+	Six   CardRank = 6
+	Seven CardRank = 7
+	Eight CardRank = 8
+	Nine  CardRank = 9
+	Ten   CardRank = 10
+	Jack  CardRank = 11
+	Queen CardRank = 12
+	King  CardRank = 13
 )
 
-func Ranks() []Rank {
-	return []Rank{
+func Ranks() []CardRank {
+	return []CardRank{
 		Ace,
 		Two,
 		Three,
@@ -37,7 +37,7 @@ func Ranks() []Rank {
 	}
 }
 
-func (r Rank) String() string {
+func (r CardRank) String() string {
 	switch r {
 	case Ace:
 		return "A"

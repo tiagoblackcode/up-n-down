@@ -3,11 +3,11 @@ package card
 import "fmt"
 
 type Card struct {
-	Suit Suit
-	Rank Rank
+	Suit CardSuit
+	Rank CardRank
 }
 
-func New(suit Suit, rank Rank) Card {
+func New(suit CardSuit, rank CardRank) Card {
 	return Card{suit, rank}
 }
 

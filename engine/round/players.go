@@ -7,7 +7,7 @@ import (
 )
 
 func (r *Round) AddPlayer(player *player.Player) error {
-	if r.State != stateInitial {
+	if r.State != RoundStateInitial {
 		return errors.New("Game is already in progress!")
 	}
 	if len(r.Players) == 4 {

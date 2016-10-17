@@ -18,7 +18,7 @@ func (cs CardSet) HasCard(card Card) bool {
 	return false
 }
 
-func (cs CardSet) HasSuit(suit Suit) bool {
+func (cs CardSet) HasSuit(suit CardSuit) bool {
 	for _, c := range cs {
 		if c.Suit == suit {
 			return true
@@ -28,7 +28,7 @@ func (cs CardSet) HasSuit(suit Suit) bool {
 	return false
 }
 
-func (cs CardSet) CardsOfSuit(suit Suit) CardSet {
+func (cs CardSet) CardsOfSuit(suit CardSuit) CardSet {
 	var cards CardSet
 
 	for _, c := range cs {
@@ -40,7 +40,7 @@ func (cs CardSet) CardsOfSuit(suit Suit) CardSet {
 	return cards
 }
 
-func (cs CardSet) HigherRankingCard(suit Suit) (Card, error) {
+func (cs CardSet) HigherRankingCard(suit CardSuit) (Card, error) {
 	var highestCard *Card
 
 	if len(cs) == 0 {

@@ -12,8 +12,10 @@ type Player struct {
 	HandsWon []card.CardSet
 }
 
-func New() Player {
-	p := Player{Id: gid}
+func New() *Player {
+	p := new(Player)
+	p.Id = gid
+
 	gid++
 
 	return p

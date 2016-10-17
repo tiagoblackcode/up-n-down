@@ -9,27 +9,27 @@ import (
 	"github.com/tiagoblackcode/up-n-down/engine/scoreboard"
 )
 
-type state int8
+type RoundState int8
 
 const (
-	stateInitial state = 0
-	stateTrump   state = 1
-	stateBench   state = 2
-	stateRedraw  state = 3
-	statePlay    state = 4
-	stateEnded   state = 5
+	RoundStateInitial   RoundState = 0
+	RoundStateTrumping  RoundState = 1
+	RoundStateBenching  RoundState = 2
+	RoundStateRedrawing RoundState = 3
+	RoundStatePlaying   RoundState = 4
+	RoundStateEnded     RoundState = 5
 )
 
 type Round struct {
-	State          state
-	Trump          card.Suit
+	State          RoundState
+	Trump          card.CardSuit
 	Deck           deck.Deck
 	Players        []*player.Player
 	InGamePlayers  []*player.Player
 	BenchedPlayers []*player.Player
 	CurrentTurn    int
 	CurrentPlayer  int
-	CurrentSuit    card.Suit
+	CurrentSuit    card.CardSuit
 	DisposedCards  card.CardSet
 	Board          card.CardSet
 	Scoreboard     scoreboard.Scoreboard
@@ -37,7 +37,7 @@ type Round struct {
 
 func New() Round {
 	r := Round{
-		State: stateInitial,
+		State: RoundStateInitial,
 		Deck:  deck.NewSpanish(),
 	}
 	r.Deck.Shuffle()
@@ -46,7 +46,7 @@ func New() Round {
 }
 
 func (r *Round) Start() error {
-	if r.State != stateInitial {
+	if r.State != RoundStateInitial {
 		return errors.New("Round already in progress")
 	}
 
@@ -63,24 +63,24 @@ func (r *Round) Start() error {
 		r.Scoreboard.AddPointsForPlayer(p, 0)
 	}
 
-	r.State = stateTrump
+	r.State = RoundStateTrumping
 	return nil
 }
 
 func (r Round) IsStarting() bool {
-	return r.State == stateInitial
+	return r.State == RoundStateInitial
 }
 
 func (r Round) IsBenching() bool {
-	return r.State == stateBench
+	return r.State == RoundStateBenching
 }
 
 func (r Round) IsRedrawing() bool {
-	return r.State == stateRedraw
+	return r.State == RoundStateRedrawing
 }
 
 func (r Round) IsPlaying() bool {
-	return r.State == statePlay
+	return r.State == RoundStatePlaying
 }
 
 func (r Round) HasCurrentSuit() bool {
