@@ -2,7 +2,6 @@ package round
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/tiagoblackcode/up-n-down/engine/card"
 	"github.com/tiagoblackcode/up-n-down/engine/player"
@@ -50,8 +49,6 @@ func (r *Round) Redraw(player *player.Player, cards []card.Card) error {
 		cardIndices = append(cardIndices, cardIdx)
 	}
 
-	fmt.Printf("Will update %+v", cardIndices)
-
 	newCards, err := r.Deck.Deal(cardCount)
 	if err != nil {
 		return err
@@ -73,17 +70,14 @@ func (r *Round) SkipRedrawing(p *player.Player) error {
 		return err
 	}
 
-	playerIdx, err := r.InGamePlayerPosition(p)
+	_, err := r.InGamePlayerPosition(p)
 	if err != nil {
 		return err
 	}
 
 	if r.IsBenched(p) {
-		return nil
+		return errors.New("This player is benched")
 	}
-
-	r.InGamePlayers = append(r.InGamePlayers[:playerIdx], r.InGamePlayers[playerIdx+1:]...)
-	r.BenchedPlayers = append(r.BenchedPlayers, p)
 
 	return r.playerHasRedrawn(p)
 }
@@ -116,7 +110,7 @@ func (r *Round) IsBenched(player *player.Player) bool {
 }
 
 func (r *Round) playerHasRedrawn(p *player.Player) error {
-	if r.CurrentPlayer == len(r.InGamePlayers)-1 {
+	if r.CurrentPlayer == len(r.Players)-1 {
 		r.State = RoundStatePlaying
 		r.CurrentPlayer = 0
 
@@ -132,9 +126,9 @@ func (r *Round) validateRedrawingPhase(p *player.Player) error {
 		return errors.New("Gams is not in the redrawing state")
 	}
 
-	playerIdx, err := r.InGamePlayerPosition(p)
+	playerIdx, err := r.PlayerPosition(p)
 	if err != nil {
-		return errors.New("Player is not in-game")
+		return errors.New("Player is not in this round")
 	}
 
 	if r.CurrentPlayer != playerIdx {

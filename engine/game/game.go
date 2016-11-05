@@ -50,3 +50,7 @@ func (g *Game) IsPlaying() bool {
 		g.State == GameStateRoundInProgress ||
 		g.State == GameStateRoundFinished
 }
+
+func (g *Game) IsFinished() bool {
+	return g.State == GameStateFinished
+}

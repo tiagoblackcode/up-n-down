@@ -27,3 +27,13 @@ func (r *Round) InGamePlayerPosition(player *player.Player) (int, error) {
 
 	return 0, errors.New("Player not found!")
 }
+
+func (r *Round) PlayerPosition(player *player.Player) (int, error) {
+	for i, p := range r.Players {
+		if p.Equal(player) != false {
+			return i, nil
+		}
+	}
+
+	return 0, errors.New("Player not found!")
+}

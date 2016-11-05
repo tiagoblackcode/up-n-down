@@ -27,12 +27,6 @@ func (r *Round) highestBoardCard() (card.Card, error) {
 }
 
 func (r *Round) handleEmptyBoardPlay(player *player.Player, playedCard card.Card) (*Round, error) {
-	if playedCard.Suit == r.Trump {
-		if len(player.Hand.CardsOfSuit(r.Trump)) != len(player.Hand) {
-			return nil, errors.New("Cannot play a trump on first turn")
-		}
-	}
-
 	player.Hand.RemoveCard(playedCard)
 	r.Board.AddCard(playedCard)
 
